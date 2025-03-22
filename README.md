@@ -1,6 +1,6 @@
 # 🌍 Minecraft Server Auto Backup & Upload Tool 🚀  
 
-![Minecraft](https://www.minecraft.net/content/dam/games/minecraft/key-art/BrandRefresh_Agnostic_Gold_3072x1728.jpg)
+![Minecraft](https://www.minecraft.net/etc.clientlibs/minecraft/clientlibs/main/resources/img/minecraft-creeper-face.jpg)
 
 ## 🎮 About This Project  
 This is a simple yet powerful **Minecraft Server Auto Backup Tool** that:  
@@ -58,12 +58,12 @@ You can use any Minecraft server software like **Paper, Spigot, Fabric, Forge**,
     npm install
     ```
 ### **Step 5: Run Your Minecraft Server**
-Start your server by running:
+-   Start your server by running:
     ```
     start.bat
     ```
-or simply run **start.bat** file.
-Once the server shuts down, the backup process will start automatically! 🎉
+    or simply run **start.bat** file.
+-   Once the server shuts down, the backup process will start automatically! 🎉
 
 ### **🏗️ How It Works**
 1. When you stop the server, backup.js runs automatically.
@@ -75,41 +75,28 @@ Once the server shuts down, the backup process will start automatically! 🎉
     - An email alert is sent (if configured).
 4. The script also deletes old backups from Google Drive to free space.
 
-### **📂 Folder Structure**
-`minecraft-server/
-│── world/                # Your Minecraft world folder
-│── plugins/              # Minecraft plugins
-│── backups/              # Local backups (optional)
-│── start.bat             # Starts the server & triggers backup
-│── backup.js             # The main backup script
-│── .env                  # Your environment variables
-│── .gitignore            # Ignore sensitive files
-│── package.json          # Node.js dependencies
-│── paper.jar             # Your Minecraft server JAR file
-`
-
 ### **📢 Notifications**
-💬 Discord Webhook – Notifies when backup is completed.
-📧 Email Alerts – Receive an email with backup details.
-⚠️ Errors & Logs – If something goes wrong, errors will be logged.
+🔹 💬 **Discord Webhook** – Notifies when backup is completed.
+🔹 📧 **Email Alerts** – Receive an email with backup details.
+🔹 ⚠️ **Errors & Logs** – If something goes wrong, errors will be logged.
 
 ### **🛑 Troubleshooting**
-Q: My backups are not being uploaded!
-✅ Check if your GOOGLE_DRIVE_FOLDER_ID is correct.
+**Q: My backups are not being uploaded!**
+- ✅ Check if your GOOGLE_DRIVE_FOLDER_ID is correct.
 
-Q: Discord notifications not working!
-✅ Make sure you set the DISCORD_WEBHOOK_URL properly in .env.
+**Q: Discord notifications not working!**
+- ✅ Make sure you set the DISCORD_WEBHOOK_URL properly in .env.
 
-Q: How do I change the compression level?
-✅ Edit .env and set COMPRESSION_LEVEL=1 (low) to 9 (high).
+**Q: How do I change the compression level?**
+- ✅ Edit .env and set COMPRESSION_LEVEL=1 (low) to 9 (high).
 
 ### **💡 Future Improvements**
 - Add SFTP support to upload backups to a remote server.
 - More customization options for backup frequency.
 
 ### **💖 Contribute & Support**
-If you find this project useful, give it a ⭐ on GitHub!
-Want to contribute? Feel free to fork and submit a pull request!
+    🔹 If you find this project useful, give it a ⭐ on GitHub!
+    🔹 Want to contribute? Feel free to fork and submit a pull request!
 
-#### **📜 License: MIT License – Free to use & modify.**
+## **📜 License: MIT License – Free to use & modify.**
 🎮 Made for Minecraft lovers, by a Minecraft lover!
