@@ -76,9 +76,9 @@ You can use any Minecraft server software like **Paper, Spigot, Fabric, Forge**,
 4. The script also deletes old backups from Google Drive to free space.
 
 ### **📢 Notifications**
-🔹 💬 **Discord Webhook** – Notifies when backup is completed.
-🔹 📧 **Email Alerts** – Receive an email with backup details.
-🔹 ⚠️ **Errors & Logs** – If something goes wrong, errors will be logged.
+    🔹 💬 **Discord Webhook** – Notifies when backup is completed.
+    🔹 📧 **Email Alerts** – Receive an email with backup details.
+    🔹 ⚠️ **Errors & Logs** – If something goes wrong, errors will be logged.
 
 ### **🛑 Troubleshooting**
 **Q: My backups are not being uploaded!**
