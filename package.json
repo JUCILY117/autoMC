@@ -1,0 +1,29 @@
+{
+  "name": "minecraft-server",
+  "version": "1.0.0",
+  "main": "backup.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JUCILY117/minecraft-server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JUCILY117/minecraft-server/issues"
+  },
+  "homepage": "https://github.com/JUCILY117/minecraft-server#readme",
+  "description": "",
+  "dependencies": {
+    "archiver": "^7.0.1",
+    "axios": "^1.8.4",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.4.7",
+    "googleapis": "^148.0.0",
+    "nodemailer": "^6.10.0",
+    "readline-sync": "^1.4.10"
+  }
+}
