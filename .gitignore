@@ -24,6 +24,7 @@ spigot.yml
 commands.yml
 help.yml
 paper.jar
+server-icon.png
 
 config/
 versions/

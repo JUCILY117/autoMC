@@ -73,8 +73,13 @@ async function createBackupIfChanged() {
 async function createBackup() {
     if (!fs.existsSync(BACKUP_DIR)) fs.mkdirSync(BACKUP_DIR);
 
-    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-    const backupName = `mc_backup_${timestamp}.zip`;
+    const now = new Date();
+    const day = String(now.getDate()).padStart(2, "0");
+    const month = now.toLocaleString("en-US", { month: "long" });
+    const year = now.getFullYear();
+    const time = `${String(now.getHours()).padStart(2, "0")}${String(now.getMinutes()).padStart(2, "0")}${String(now.getSeconds()).padStart(2, "0")}`;
+
+    const backupName = `mc_${day}_${month}_${year}_${time}.zip`;
     const backupPath = path.join(BACKUP_DIR, backupName);
 
     const output = fs.createWriteStream(backupPath);
@@ -213,84 +218,182 @@ async function sendEmailNotification(backupName) {
 
     try{
     await transporter.sendMail({
-        from: EMAIL_USER,
+        from: `"Aayu Backups" <${EMAIL_USER}>`,
         to: EMAIL_TO,
         subject: "Minecraft Backup Completed",
         html:`<!DOCTYPE html>
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Minecraft Backup Notification</title>
-                <style>
-                    body {
-                        font-family: 'Segoe UI', sans-serif;
-                        background-color: #f3f3f3;
-                        color: #333;
-                        margin: 0;
-                        padding: 0;
-                        text-align: center;
-                        background: url('https://wallpapercave.com/uwp/uwp4702799.png') no-repeat center center fixed;
-                        background-size: cover;
-                    }
-                    .container {
-                        max-width: 600px;
-                        margin: 50px auto;
-                        padding: 20px;
-                        background: rgba(255, 255, 255, 0.9);
-                        border-radius: 10px;
-                        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
-                    }
-                    .header {
-                        font-size: 26px;
-                        font-weight: bold;
-                        padding: 15px;
-                        background: #26a269;
-                        color: #fff;
-                        border-top-left-radius: 10px;
-                        border-top-right-radius: 10px;
-                    }
-                    .content {
-                        padding: 20px;
-                    }
-                    .footer {
-                        font-size: 14px;
-                        margin-top: 20px;
-                        padding: 10px;
-                        background: #26a269;
-                        border-bottom-left-radius: 10px;
-                        border-bottom-right-radius: 10px;
-                        color: #fff;
-                    }
-                    .minecraft-image {
-                        width: 120px;
-                        height: auto;
-                    }
-                    .info {
-                        font-size: 18px;
-                        color: #444;
-                    }
-                    .highlight {
-                        font-size: 20px;
-                        font-weight: bold;
-                        color: #26a269;
-                    }
-                </style>
-            </head>
-            <body>
-                <div class="container">
-                    <div class="header">Minecraft Server Backup Completed ✅</div>
-                    <div class="content">
-                        <img src="https://www.minecraft.net/etc.clientlibs/minecraft/clientlibs/main/resources/img/minecraft-creeper-face.jpg" alt="Minecraft Backup" class="minecraft-image">
-                        <p class="info">Great news! Your Minecraft world has been successfully backed up.</p>
-                        <p class="highlight">Backup Name: ${backupName}</p>
-                        <p>📁 Your backup has been securely stored in Google Drive.</p>
-                        <p>🛠️ This ensures you never lose your progress, no matter what happens!</p>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Minecraft Backup Notification</title>
+                    <style>
+                        body, html {
+                            margin: 0;
+                            padding: 0;
+                            width: 100%;
+                            height: 100%;
+                            font-family: 'Segoe UI', sans-serif;
+                            background: #0f0f0f;
+                            color: #e5e7eb;
+                            line-height: 1.6;
+                        }
+                        
+                        a {
+                            text-decoration: none;
+                        }
+
+                        .email-container {
+                            max-width: 680px;
+                            margin: 0 auto;
+                            background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
+                            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+                            border-radius: 16px;
+                            overflow: hidden;
+                            color: #e5e7eb;
+                        }
+
+                        .email-header {
+                            background: radial-gradient(circle, #1a73e8, #0f0f0f);
+                            color: #fff;
+                            text-align: center;
+                            padding: 50px 40px;
+                            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                        }
+                        
+                        .email-header h1 {
+                            font-size: 36px;
+                            margin: 0;
+                            font-weight: 600;
+                        }
+                        
+                        .email-header img {
+                            width: 90px;
+                            margin: 20px 0;
+                            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.7));
+                        }
+
+                        .email-content {
+                            padding: 50px 40px;
+                            text-align: center;
+                        }
+
+                        .email-content p {
+                            font-size: 18px;
+                            color: #d1d5db;
+                            margin: 20px 0;
+                        }
+
+                        .email-content .highlight {
+                            font-size: 24px;
+                            font-weight: bold;
+                            color: #1a73e8;
+                        }
+
+                        .btn {
+                            display: inline-block;
+                            padding: 16px 40px;
+                            margin: 30px 0;
+                            font-size: 18px;
+                            color: #fff;
+                            background: linear-gradient(135deg, #1a73e8, #0052cc);
+                            border-radius: 8px;
+                            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.4);
+                            transition: transform 0.3s, background 0.3s;
+                        }
+
+                        .btn:hover {
+                            background: linear-gradient(135deg, #0052cc, #1a73e8);
+                            transform: translateY(-4px);
+                        }
+
+                        .email-footer {
+                            background: #1e1e1e;
+                            color: #9ca3af;
+                            text-align: center;
+                            padding: 35px 40px;
+                            font-size: 14px;
+                            border-top: 1px solid rgba(255, 255, 255, 0.1);
+                        }
+
+                        .email-footer a {
+                            color: #1a73e8;
+                            text-decoration: none;
+                            transition: color 0.3s;
+                        }
+
+                        .email-footer a:hover {
+                            color: #3b82f6;
+                        }
+
+                        .glass-card {
+                            background: rgba(255, 255, 255, 0.05);
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                            backdrop-filter: blur(12px);
+                            -webkit-backdrop-filter: blur(12px);
+                            padding: 20px;
+                            border-radius: 12px;
+                            margin: 20px auto;
+                            width: 80%;
+                            max-width: 540px;
+                            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+                        }
+
+                        @media screen and (max-width: 680px) {
+                            .email-header, .email-content, .email-footer {
+                                padding: 30px 20px;
+                            }
+                            
+                            .email-header h1 {
+                                font-size: 28px;
+                            }
+
+                            .btn {
+                                width: 100%;
+                                font-size: 16px;
+                                padding: 14px 30px;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+
+                <div class="email-container">
+
+                    <div class="email-header">
+                        <h1>🎯 Minecraft Backup Successful</h1>
+                        <img src="https://www.minecraft.net/etc.clientlibs/minecraft/clientlibs/main/resources/img/minecraft-creeper-face.jpg" 
+                            alt="Minecraft Backup">
+                    </div>
+
+                    <div class="email-content">
+                        <p>✅ Your Minecraft server backup has been successfully created and stored in Google Drive.</p>
+                        
+                        <div class="glass-card">
+                            <p class="highlight">Backup Name: <strong>${backupName}</strong></p>
+                            <p>📁 Securely saved in your Drive folder.</p>
+                            <p>🛠️ This ensures your progress is always safe.</p>
+                        </div>
+
+                        <a href="https://drive.google.com/drive/folders/${GOOGLE_DRIVE_FOLDER_ID}" 
+                        class="btn" target="_blank">
+                            View Backup in Drive
+                        </a>
+
                         <p>💾 Keep building, crafting, and exploring without worries.</p>
                     </div>
-                    <div class="footer">Stay safe and happy mining! ⛏️ - Aayu Corp</div>
+
+                    <div class="email-footer">
+                        <p>Stay safe and happy mining! ⛏️</p>
+                        <p>&copy; 2025 Aayu Corp. All rights reserved | 
+                            <a href="https://aayumats.vercel.app" target="_blank">Website</a>
+                        </p>
+                    </div>
+
                 </div>
-            </body>
-            </html>
+
+                </body>
+                </html>
             `,
         });
 
