@@ -27,9 +27,25 @@ async function authenticate() {
     const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
 
     if (fs.existsSync(TOKEN_PATH)) {
-        oAuth2Client.setCredentials(JSON.parse(fs.readFileSync(TOKEN_PATH)));
+        const tokens = JSON.parse(fs.readFileSync(TOKEN_PATH));
+        oAuth2Client.setCredentials(tokens);
+
+        oAuth2Client.on('tokens', (newTokens) => {
+            if (newTokens.refresh_token || newTokens.access_token) {
+                const updatedTokens = {
+                    ...tokens,
+                    ...newTokens
+                };
+                fs.writeFileSync(TOKEN_PATH, JSON.stringify(updatedTokens));
+                console.log("🔄 Refreshed tokens saved.");
+            }
+        });
     } else {
-        const authUrl = oAuth2Client.generateAuthUrl({ access_type: "offline", scope: SCOPES });
+        const authUrl = oAuth2Client.generateAuthUrl({
+            access_type: "offline",
+            prompt: "consent",
+            scope: SCOPES
+        });
         console.log("Authorize this app by visiting:", authUrl);
         const code = readlineSync.question("Enter the code from that page: ");
         const { tokens } = await oAuth2Client.getToken(code);
